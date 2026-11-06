@@ -21,6 +21,11 @@ const [note, setNote] = useState({
   body: '',
 })
 
+const [search, setSearch] = useState('')
+const filteredNotes = notes.filter((note) =>
+  note.title.toLowerCase().includes(search.toLowerCase())
+)
+
 function handleChange(event) {
   const { name, value } = event.target
 
@@ -69,18 +74,20 @@ function handleSubmit(event) {
           <p className="mb-2 text-[13px] font-normal tracking-wide text-[#949494]">SEARCH</p>
          <input
            placeholder="Search by title"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
             className="h-[52px] w-full border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
           />
         </div>
         <form className="grid gap-3" onSubmit={handleSubmit}>
           <p className="text-[13px] font-normal tracking-wide text-[#949494]">NEW NOTE</p>
           <input
-                name="title"
-                value={note.title}
-                onChange={handleChange}
-                placeholder="Title"
-                className="h-[52px] w-full border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
-                />
+            name="title"
+            value={note.title}
+            onChange={handleChange}
+            placeholder="Title"
+            className="h-[52px] w-full border border-[#e6e6e6] px-4 text-lg outline-none placeholder:text-black/40 placeholder:italic focus:border-[#cf7d7d]"
+            />
           <textarea
             name="body"
             value={note.body}
@@ -102,7 +109,7 @@ function handleSubmit(event) {
       <section className="px-12 py-11">
         <h2 className="mb-6 text-3xl">All notes</h2>
       <ul className="grid grid-cols-3 items-start gap-5">
-          {notes.map((note) => (
+          {filteredNotes.map((note) => (
                 <li
                     key={note.id}
                     className="relative min-h-32 bg-white px-6 py-5 shadow-[0_2px_4px_0_rgba(0,0,0,0.2),0_25px_50px_0_rgba(0,0,0,0.1)]"
@@ -122,7 +129,7 @@ function handleSubmit(event) {
           ))}
         </ul>
 
-        {notes.length === 0 && (
+        {filteredNotes.length === 0 && (
         <p className="text-lg text-[#949494]">No notes found</p>
         )}
       </section>
