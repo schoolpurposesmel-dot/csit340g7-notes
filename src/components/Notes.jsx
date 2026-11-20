@@ -19,11 +19,12 @@ function Notes() {
   const [notes, setNotes] = useState(() => {
     const saved = localStorage.getItem('notes')
     return saved ? JSON.parse(saved) : startingNotes
+    
   })
 
-const [note, setNote] = useState({
-  title: '',
-  body: '',
+const [note, setNote] = useState(() => {
+  const saved = localStorage.getItem('draft')
+  return saved ? JSON.parse(saved) : { title: '', body: '' }
 })
 
 const [search, setSearch] = useState('')
