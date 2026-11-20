@@ -32,6 +32,15 @@ useEffect(() => {
     localStorage.setItem('notes', JSON.stringify(notes))
   }, [notes])
 
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      localStorage.setItem('draft', JSON.stringify(note))
+      console.log('draft saved:', note.title)
+    }, 1000)
+    return () => clearTimeout(id)
+  }, [note])
+
 const filteredNotes = notes.filter((note) =>
   note.title.toLowerCase().includes(search.toLowerCase())
 )
