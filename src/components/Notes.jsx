@@ -68,7 +68,7 @@ function handleChange(event) {
   })
 }
 
-function handleSubmit(event) {
+async function handleSubmit(event) {
   event.preventDefault()
 
   const title = note.title.trim()
@@ -77,6 +77,24 @@ function handleSubmit(event) {
   if (!title || !body) {
     return
   }
+
+  try {
+    const res = await fetch(API_URL + '/notes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, body }),
+    })
+    if (!res.ok) {
+      throw new Error('The server answered ' + res.status)
+    }
+    const newNote = await res.json()
+    setNotes([...notes, newNote])
+    setNote({ title: '', body: '' })
+    titleRef.current.focus()
+  } catch (err) {
+    setError(err.message)
+  }
+
 
  
 
